@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteio de números</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: radial-gradient(circle, #0b5138, #031f16);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.cassino {
+    background: #111;
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.7);
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.numeros {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.bola {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 3px solid gold;
+    animation: girar 0.6s ease-in-out;
+}
+
+@keyframes girar {
+    from { transform: rotateY(0deg) scale(0.5); }
+    to   { transform: rotateY(360deg) scale(1); }
+}
+
+.vermelho { background: #c62828; }
+.preto { background: #000; }
+
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fbc02d, #f57f17);
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+small {
+    display: block;
+    margin-top: 12px;
+    opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="cassino">
+    <h1>🎰 Sorteio de Números</h1>
+    <p>Sorteio de 6 números</p>
+
+    <div id="numeros" class="numeros"></div>
+
+    <button onclick="sortear()">🎲 Sortear</button>
+
+    <small>Alejandro</small>
+</div>
+
+<audio id="som" src="https://assets.mixkit.co/sfx/preview/mixkit-casino-roulette-wheel-1992.mp3"></audio>
+
+<script>
+const vermelho = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+
+function sortear() {
+    const som = document.getElementById("som");
+    const container = document.getElementById("numeros");
+
+    som.currentTime = 0;
+    som.play();
+
+    container.innerHTML = "";
+
+    let numeros = [];
+    while (numeros.length < 6) {
+        let n = Math.floor(Math.random() * 36) + 1;
+        if (!numeros.includes(n)) numeros.push(n);
+    }
+
+    numeros.forEach((n, i) => {
+        setTimeout(() => {
+            const bola = document.createElement("div");
+            bola.classList.add("bola");
+
+            if (vermelho.includes(n)) {
+                bola.classList.add("vermelho");
+            } else {
+                bola.classList.add("preto");
+            }
+
+            bola.textContent = n;
+            container.appendChild(bola);
+        }, i * 300);
+    });
+}
+</script>
+
+</body>
+</html>
